@@ -1,0 +1,11 @@
+{
+  "device"    : "Mi Max",
+  "isSmart"   : "true",
+  "releaseTime" : "2015-04-17 10:00:00",
+  "price"   : 1650,
+  "apps"    : [{"name" : "MiChat"}, {"name" : "Didi"}, {"name" : "CMB"}],
+  "manufacturer": {
+    "name"  : "Mi",
+    "country" : "China"
+  }
+}

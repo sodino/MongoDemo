@@ -1,0 +1,15 @@
+{
+  "name": "mongo_demo",
+  "version": "0.0.1",
+  "description": "Mongo Demo",
+  "main": "app.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "mongo",
+    "demo"
+  ],
+  "author": "sodino@qq.com",
+  "license": "ISC"
+}

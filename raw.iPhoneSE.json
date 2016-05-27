@@ -1,0 +1,11 @@
+{
+  "device"    : "iPhone SE",
+  "isSmart"   : "true",
+  "releaseTime" : "2016-03-21 10:00:00",
+  "price"   : 4999,
+  "apps"    : [{"name" : "Safari"}, {"name" : "Map"}, {"name" : "Tinder"}],
+  "manufacturer": {
+    "name"  : "Apple",
+    "country" : "The United States"
+  }
+}
