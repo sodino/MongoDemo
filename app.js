@@ -252,19 +252,6 @@ function findThePhoneThatInstalledTheLargestNumberOfApps() {
 }
 
 function addApps(phone) {
-	// http://tech-blog.maddyzone.com/node/add-update-delete-object-array-schema-mongoosemongodb
-	// Phone.findByIdAndUpdate(phone._id,
-	// 	{$push : {address : "Shenzhen"}},
-	// 	{safe : true, upsert : true},
-	// 	(err, result) => {
-	// 		console.log('---addApps()---------------------------------');
-	// 		if (err) {
-	// 			console.log(err);
-	// 		} else {
-	// 			console.log(result);
-	// 		}
-	// 	});
-
 	phone.apps.push({name : "58City"});
 	Phone.update({_id : phone._id}, 
 		phone, 
@@ -278,10 +265,40 @@ function addApps(phone) {
 
 				Phone.findOne({_id : phone._id}, (err, phone) => {
 					console.log('---app:58City added.---------------------------------');
-					console.log(phone);
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(phone);
+					}
+
+					removePhone(phone);
 				});
 			}
 		}
 	);
 }
 
+
+function removePhone(phone) {
+	Phone.remove({_id: phone._id}, (err) => {
+		console.log('---removePhone()---', phone.device, '------------------------');
+		if (err) {
+			console.log(err);
+		} else {
+			Phone.find((err, phones) => {
+				if (err) {
+					console.log('findAllPhone err:', err);
+				} else {
+					phones.forEach((element, index, phones) => {
+						console.log(index, element);
+					});
+				}
+
+				// 关闭
+				// mongoose.connection.close();
+				// db.close();
+				mongoose.disconnect();
+			});
+		}
+	});
+}
