@@ -3,7 +3,7 @@
   "isSmart"   : "true",
   "releaseTime" : "2015-12-09 10:00:00",
   "price"   : 4988,
-  "apps"    : [{"name" : "Alipay"}, {"name" : "WeChat"}, {"name" : "Gaode Map"}],
+  "apps"    : [{"name" : "Alipay"}, {"name" : "CMB"}, {"name" : "NetEase Music"}, {"name" : "Tinder"}, {"name" : "WeChat"}, {"name" : "Gaode Map"}],
   "manufacturer": {
     "name"  : "Huawei",
     "country" : "China"

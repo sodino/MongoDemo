@@ -1,0 +1,11 @@
+{
+  "device"    : "Nokia 1000",
+  "isSmart"   : "false",
+  "releaseTime" : "2011-08-26 10:00:00",
+  "price"   : 200,
+  "apps"    : [{"name" : "System Phone"}, {"name" : "Radio"}],
+  "manufacturer": {
+    "name"  : "Nokia",
+    "country" : "Finland"
+  }
+}
