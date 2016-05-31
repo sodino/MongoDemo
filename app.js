@@ -215,11 +215,117 @@ function findNoSmartPhone() {
 			});
 		}
 
-
-		findThePhoneThatInstalledTheLargestNumberOfApps();
+		findPhoneInstalledRadio();		
 	});
 }
 
+
+function findPhoneInstalledRadio() {
+	Phone.find({'apps.name' : 'Radio'}).exec((err, phones)=>{
+		console.log('---findPhoneInstalledRadio()---------------------');
+		if (err) {
+			console.log(err);
+		} else {
+			phones.forEach((element, index, phones) => {
+				console.log(index, element);
+			})
+		}
+		findSmartPhoneInstalledRadio();
+	});
+}
+
+function findSmartPhoneInstalledRadio() {
+	Phone.find({isSmart : true, 'apps.name' : 'Radio'}).exec((err, phones)=>{
+		console.log('---findSmartPhoneInstalledRadio()---------------------');
+		if (err) {
+			console.log(err);
+		} else {
+			phones.forEach((element, index, phones) => {
+				console.log(index, element);
+			})
+		}
+		findChina_or_SouthKorea_and_1000_4000Phone();
+	});
+}
+
+function findChina_or_SouthKorea_and_1000_4000Phone() {
+	// 查找中国或韩国厂商且价格处于[1000, 4000)范围内的手机
+
+	// 用以下4种方式都可以
+	// Phone.find({$or:[
+	// 					{'manufacturer.country':'China'},
+	// 					{'manufacturer.country':'South Korea'}
+	// 				], $and:[
+	// 					{'price' : {$gte : 1000}},
+	// 					{'price' : {$lt : 4000}}
+	// 				]
+	// 			}).exec((err, phones) => {
+	// 				console.log('---findChina_or_SouthKorea_and_1000_4000Phone()----------------------------');
+	// 				if (err) {
+	// 					console.log(err);
+	// 				} else {
+	// 					phones.forEach((element, index, phones) => {
+	//					 	console.log(index, element);
+	//					});
+	// 				}
+
+	// 				findThePhoneThatInstalledTheLargestNumberOfApps();
+	// 			});
+
+
+	Phone.find()
+		.or([{'manufacturer.country':'China'}, {'manufacturer.country':'South Korea'}])
+		.where('price').gte(1000).lt(4000)
+		.exec((err, phones) => {
+			console.log('---findChina_or_SouthKorea_and_1000_4000Phone()----------------------------');
+			if (err) {
+				console.log(err);
+			} else {
+				phones.forEach((element, index, phones) => {
+					console.log(index, element);
+				});
+			}
+
+			findThePhoneThatInstalledTheLargestNumberOfApps();
+		});
+
+	// Phone.find({'manufacturer.country' : 
+	// 				{$in:['China', 'South Korea']}, 
+	// 			$and:[
+	// 					{'price' : {$gte : 1000}},
+	// 					{'price' : {$lt : 4000}}
+	// 				]
+	// 			}).exec((err, phones) => {
+	// 				console.log('---findChina_or_SouthKorea_and_1000_4000Phone()----------------------------');
+	// 				if (err) {
+	// 					console.log(err);
+	// 				} else {
+	// 					phones.forEach((element, index, phones) => {
+	// 						console.log(index, element);
+	// 					});
+	// 				}
+
+	// 				findThePhoneThatInstalledTheLargestNumberOfApps();
+	// 			});
+
+	// Phone.find()
+	// 	.where('manufacturer.country').in(['China', 'South Korea'])
+	// 	.where('price').gte(1000).lt(4000)
+	// 	.exec((err, phones) => {
+	// 		console.log('---findChina_or_SouthKorea_and_1000_4000Phone()----------------------------');
+	// 		if (err) {
+	// 			console.log(err);
+	// 		} else {
+	// 			phones.forEach((element, index, phones) => {
+	// 				console.log(index, element);
+	// 			});
+	// 		}
+
+	// 		findThePhoneThatInstalledTheLargestNumberOfApps();
+	// 	});
+
+
+}
 
 function findThePhoneThatInstalledTheLargestNumberOfApps() {
 	// http://stackoverflow.com/questions/9040161/mongo-order-by-length-of-array
@@ -294,6 +400,7 @@ function removePhone(phone) {
 					});
 				}
 
+				console.log('---mongoose close db-----------------------------------');
 				// 关闭
 				// mongoose.connection.close();
 				// db.close();

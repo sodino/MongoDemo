@@ -3,7 +3,7 @@
   "isSmart"   : "true",
   "releaseTime" : "2015-12-09 10:00:00",
   "price"   : 3850,
-  "apps"    : [{"name" : "Taobao"}, {"name" : "Didi"}, {"name" : "360 Camera"}],
+  "apps"    : [{"name" : "Taobao"}, {"name" : "Didi"}, {"name" : "Radio"}, {"name" : "360 Camera"}],
   "manufacturer": {
     "name"  : "Samsung",
     "country" : "South Korea"
