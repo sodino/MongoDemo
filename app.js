@@ -17,6 +17,20 @@ phoneSchema.methods.printBrief = function () {
 	console.log(this.device, '￥'+this.price);
 };
 
+phoneSchema.statics.printCount = function() {
+	// 其它的count()计算方法见以下链接：http://mongoosejs.com/docs/api.html#query_Query-count
+
+	// Model.count([selector], [callback])
+	this.count({}, (err, count) => {
+		console.log('---printCount()-----------------------------')
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('phone count=' + count);
+		}
+	});
+};
+
 console.log('---printBrief()---------------------------------------');
 var Phone = mongoose.model('Phone', phoneSchema);
 var arrPhone = [];
@@ -99,9 +113,11 @@ function savePhoneArr(saveByEach) {
 
 				savePhoneArr.savedCount ++;
 				if (length === savePhoneArr.savedCount) {
-					console.log('All phone devices saved.forEach() saved.');
-					findAllPhone();
+					console.log('All phone devices saved.forEach() saved.');	
 				}
+
+				findAllPhone();
+				Phone.printCount();
 			});
 		});
 	} else {
@@ -112,10 +128,13 @@ function savePhoneArr(saveByEach) {
 				console.log('---insertMany()---------------------------------------');
 				console.log('All phone devices saved.insertMany() saved.');
 			}
+
 			findAllPhone();
+			Phone.printCount();
 		})
-	}
+	}	
 }
+
 
 function findAllPhone() {
 	Phone.find((err, phones) => {
