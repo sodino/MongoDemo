@@ -35,7 +35,7 @@ console.log('---printBrief()---------------------------------------');
 var Phone = mongoose.model('Phone', phoneSchema);
 var arrPhone = [];
 var raw;
-raw = require('./raw.iPhoneSe.json');
+raw = require('./raw.iPhoneSE.json');
 var iPhoneSE = new Phone(raw);
 iPhoneSE.printBrief();
 arrPhone.push(iPhoneSE);
@@ -288,7 +288,7 @@ function findChina_or_SouthKorea_and_1000_4000Phone() {
 	//					});
 	// 				}
 
-	// 				findThePhoneThatInstalledTheLargestNumberOfApps();
+	// 				findThePhoneWithMostAppsInstalled();
 	// 			});
 
 
@@ -305,7 +305,7 @@ function findChina_or_SouthKorea_and_1000_4000Phone() {
 				});
 			}
 
-			findThePhoneThatInstalledTheLargestNumberOfApps();
+			findThePhoneWithMostAppsInstalled();
 		});
 
 	// Phone.find({'manufacturer.country' : 
@@ -324,7 +324,7 @@ function findChina_or_SouthKorea_and_1000_4000Phone() {
 	// 					});
 	// 				}
 
-	// 				findThePhoneThatInstalledTheLargestNumberOfApps();
+	// 				findThePhoneWithMostAppsInstalled();
 	// 			});
 
 	// Phone.find()
@@ -340,13 +340,13 @@ function findChina_or_SouthKorea_and_1000_4000Phone() {
 	// 			});
 	// 		}
 
-	// 		findThePhoneThatInstalledTheLargestNumberOfApps();
+	// 		findThePhoneWithMostAppsInstalled();
 	// 	});
 
 
 }
 
-function findThePhoneThatInstalledTheLargestNumberOfApps() {
+function findThePhoneWithMostAppsInstalled() {
 	// http://stackoverflow.com/questions/9040161/mongo-order-by-length-of-array
 	Phone.aggregate([{$project :
 							{apps_count : 
@@ -363,7 +363,7 @@ function findThePhoneThatInstalledTheLargestNumberOfApps() {
 					])
 				// .limit(1) // 可加可不加.取结果的phones[0]即可了
 				.exec((err, phones)=>{
-					console.log('---findThePhoneThatInstalledTheLargestNumberOfApps()---------------------------------');
+					console.log('---findThePhoneWithMostAppsInstalled()---------------------------------');
 					if (err) {
 						console.log(err);
 					} else {
@@ -372,16 +372,96 @@ function findThePhoneThatInstalledTheLargestNumberOfApps() {
 					}
 
 
-					addApps(phone);
+					updateDeviceName(phone);
 				});
 }
 
-function addApps(phone) {
-	phone.apps.push({name : "58City"});
-	Phone.update({_id : phone._id}, 
-		phone, 
-		{safe : true, upsert : true},
+function updateDeviceName(phone) {
+	// Phone.update({_id : phone._id},
+	// 	{device : "Huawei Mate 8000"},
+	// 	{safe : true},
+	// 	(err, rawResponse) => {
+	// 		console.log('---updateDeviceName()---------------------------------');
+	// 		if (err) {
+	// 			console.log(err);
+	// 		} else {
+	// 			console.log(rawResponse);
+
+	// 			Phone.findOne({_id : phone._id}, (err, phone) => {
+	// 				console.log('---device update to "Huawei Mate 8000"---------------------------------');
+	// 				if (err) {
+	// 					console.log(err);
+	// 				} else {
+	// 					console.log(phone);
+	// 				}
+
+	// 				addApps(phone);
+	// 			});
+	// 		}
+	// 	}
+	// );
+
+
+	Phone.update({_id : phone._id},
+		{
+			$set :{device : "Huawei Mate 8000"}
+		},
+		{safe : true},
 		(err, rawResponse) => {
+			console.log('---updateDeviceName()---------------------------------');
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(rawResponse);
+
+				Phone.findOne({_id : phone._id}, (err, phone) => {
+					console.log('---device update to "Huawei Mate 8000"---------------------------------');
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(phone);
+					}
+
+					addApps(phone);
+				});
+			}
+		}
+	);
+}
+
+function addApps(phone) {
+	// 保存phone的全部信息
+	// phone.apps.push({name : "58City"});
+	// Phone.update({_id : phone._id}, 
+	// 	phone, 
+	// 	{safe : true, upsert : true},
+	// 	(err, rawResponse) => {
+	// 		console.log('---addApps()---------------------------------');
+	// 		if (err) {
+	// 			console.log(err);
+	// 		} else {
+	// 			console.log(rawResponse);
+
+	// 			Phone.findOne({_id : phone._id}, (err, phone) => {
+	// 				console.log('---app:58City added.---------------------------------');
+	// 				if (err) {
+	// 					console.log(err);
+	// 				} else {
+	// 					console.log(phone);
+	// 				}
+
+	// 				removePhone(phone);
+	// 			});
+	// 		}
+	// 	}
+	// );
+
+
+	// 只修改apps 这个数组
+	Phone.update({_id : phone._id}, 
+		{$push : {apps : {name : '58City'}}},
+		{safe : true, upsert : true},
+		(err, rawResponse)=>{
 			console.log('---addApps()---------------------------------');
 			if (err) {
 				console.log(err);
@@ -423,6 +503,7 @@ function removePhone(phone) {
 				// 关闭
 				// mongoose.connection.close();
 				// db.close();
+
 				mongoose.disconnect();
 			});
 		}
