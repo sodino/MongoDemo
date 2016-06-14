@@ -263,8 +263,83 @@ function findSmartPhoneInstalledRadio() {
 				console.log(index, element);
 			})
 		}
-		findChina_or_SouthKorea_and_1000_4000Phone();
+		//findChina_or_SouthKorea_and_1000_4000Phone();
+		addOSField();
 	});
+}
+
+function addOSField() {
+	// 为Phone增加`OS`字段
+	phoneSchema.add({OS : 'String'});
+
+	Phone.update({device : /nokia/i},
+		{
+			$set :{OS : 'Symbian'}
+		},
+		{safe : true, multi : true},
+		(err, rawResponse) => {
+			console.log('---addOSField()---nokia------------------------');
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(rawResponse);
+			}
+		}
+	);
+
+	Phone.update({device : /iphone/i},
+		{
+			$set : {OS : 'Apple OS'}
+		},
+		{safe : true, multi : true},
+		(err, rawResponse) => {
+			console.log('---addOSField()---iphone------------------------');
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(rawResponse);
+			}
+		}
+	);
+
+	// Phone.update(
+	// 	{$and : [
+	// 		{device : {$not : /iphone/i}},
+	// 		{device : {$not : /nokia/i}}
+	// 		]
+	// 	},
+	// 	{
+	// 		$set : {OS : 'Android'}
+	// 	},
+	// 	{safe : true, multi : true},
+	// 	(err, rawResponse) => {
+	// 		console.log('---addOSField()---android------------------------');
+	// 		if (err) {
+	// 			console.log(err);
+	// 		} else {
+	// 			console.log(rawResponse);
+	// 		}
+	// 	}
+	// );
+
+	// 剩余未添加'OS'字段的都是Android
+	Phone.update( { OS: { $exists: false } } ,
+		{
+			$set : {OS : 'Android'}
+		},
+		{safe : true, multi : true},
+		(err, rawResponse) => {
+			console.log('---addOSField()---android------------------------');
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(rawResponse);
+			}
+
+			findChina_or_SouthKorea_and_1000_4000Phone();
+		}
+	);
+
 }
 
 function findChina_or_SouthKorea_and_1000_4000Phone() {
