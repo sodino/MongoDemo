@@ -380,7 +380,7 @@ function findChina_or_SouthKorea_and_1000_4000Phone() {
 				});
 			}
 
-			findThePhoneWithMostAppsInstalled();
+			randomSelect();
 		});
 
 	// Phone.find({'manufacturer.country' : 
@@ -399,7 +399,7 @@ function findChina_or_SouthKorea_and_1000_4000Phone() {
 	// 					});
 	// 				}
 
-	// 				findThePhoneWithMostAppsInstalled();
+	// 				randomSelect();
 	// 			});
 
 	// Phone.find()
@@ -414,11 +414,34 @@ function findChina_or_SouthKorea_and_1000_4000Phone() {
 	// 				console.log(index, element);
 	// 			});
 	// 		}
-
-	// 		findThePhoneWithMostAppsInstalled();
+	//		randomSelect();
+	// 		
 	// 	});
 
 
+}
+
+
+
+// $sample 随机选择/取样
+function randomSelect() {
+	Phone.aggregate([
+			// $match：在符合条件的结果中取$sample,根据实际情况可以注释掉，不使用
+			{
+				$match : { isSmart : true} // 只在智能机中取样
+			}, 
+			{ 
+				$sample : {size : 1} // 随机选一个
+			}
+		]).exec((err, arr) => {
+			console.log('---randomSelect()--------------------------');
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(arr);
+			}
+			findThePhoneWithMostAppsInstalled();
+		});
 }
 
 function findThePhoneWithMostAppsInstalled() {
@@ -450,6 +473,9 @@ function findThePhoneWithMostAppsInstalled() {
 					updateDeviceName(phone);
 				});
 }
+
+
+
 
 function updateDeviceName(phone) {
 	// Phone.update({_id : phone._id},
@@ -557,7 +583,6 @@ function addApps(phone) {
 		}
 	);
 }
-
 
 function removePhone(phone) {
 	Phone.remove({_id: phone._id}, (err) => {

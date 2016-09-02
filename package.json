@@ -11,5 +11,13 @@
     "demo"
   ],
   "author": "sodino@qq.com",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sodino/MongoDemo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sodino/MongoDemo/issues"
+  },
+  "homepage": "https://github.com/sodino/MongoDemo#readme"
 }
