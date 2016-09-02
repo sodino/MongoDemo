@@ -31,8 +31,41 @@ phoneSchema.statics.printCount = function() {
 	});
 };
 
+
+var myPhoneSchema = new Schema({
+	_device : String,   // 设备名，用于精确查找ref，避免出现过多的空数据
+	_phone  : {type : Schema.Types.ObjectId, ref : 'Phone'} // 定义引用
+});
+
+myPhoneSchema.statics.addMyPhone = function(phone, callback){
+	// 需要_device来条件过滤，否则callback中phones会是一个数组长度为数据库集合数的数组
+	// populate操作并不像find等操作是在mongo db内部实现，而是在执行了find()之后对返回的数据再处理
+	// 如果没有加_device的限定，则需要对callback中phones再自己编码过滤一遍，会心好累...
+	Phone.find({_device : phone.device})  
+		.populate({
+			path : 'Phone',
+			match : {device : phone.device}
+		})
+		.exec((err, phones) => {
+			console.log('---addMyPhone()------------------------------');
+			if (err) {
+				console.log(err);
+			} else {
+				if (phones.length > 0) {
+					// 经过device的条件过滤，期望目标为只有1个或0个
+				} else {
+
+				}
+			}
+		});
+};
+
+
+
 console.log('---printBrief()---------------------------------------');
 var Phone = mongoose.model('Phone', phoneSchema);
+var MyPhone = mongoose.model('MyPhone', myPhoneSchema);
+
 var arrPhone = [];
 var raw;
 raw = require('./raw.iPhoneSE.json');
